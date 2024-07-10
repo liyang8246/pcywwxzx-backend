@@ -1,7 +1,7 @@
 use api::{get_verifycode, issue::*};
 use model::{AppState, State};
 use reqwest::Method;
-use salvo::{cors::Cors, prelude::*};
+use salvo::{conn::native_tls::NativeTlsConfig, cors::Cors, prelude::*};
 use sqlx::sqlite::SqlitePoolOptions;
 use std::{
     collections::HashMap,
@@ -17,7 +17,7 @@ mod api;
 mod model;
 mod utils;
 
-#[tokio::main(flavor = "multi_thread", worker_threads = 32)]
+#[tokio::main]
 async fn main() {
     tracing_subscriber::fmt().init();
     dotenv::dotenv().ok();
@@ -25,6 +25,7 @@ async fn main() {
     let mxnzp_appid = env::var("MXNZP_APPID").unwrap();
     let mxnzp_secret = env::var("MXNZP_SECRET").unwrap();
     let manager_passwd = env::var("MANAGER_PASSWD").unwrap();
+    let pkcs12_passwd = env::var("PKCS12_PASSWD").unwrap();
     let app_state: State = Arc::new(Mutex::new(AppState {
         db_pool: SqlitePoolOptions::new()
             .max_connections(4)
@@ -44,17 +45,23 @@ async fn main() {
             let mut state = state_clone.lock().await;
             state.verifycode
                 .retain(|_, (_, i)| *i + Duration::from_secs(300) > Instant::now());
-            // println!("verifycode: {:?}", state.verifycode);
         }
     });
 
     let cors = Cors::new()
-        // .allow_origin("http://127.0.0.1:5500")
-        .allow_origin("http://192.168.100.140:5500")
+        .allow_origin("https://www.pcywwxzx.top")
         .allow_methods(vec![Method::GET, Method::PUT, Method::POST, Method::DELETE, Method::OPTIONS])
         .into_handler();
 
-    let acceptor = TcpListener::new("0.0.0.0:5800").bind().await;
+    let acceptor = TcpListener::new("0.0.0.0:5800")
+        .native_tls(
+            async_stream::stream! {
+                loop {
+                    yield load_config(&pkcs12_passwd);
+                    tokio::time::sleep(Duration::from_secs(60)).await;
+                }
+        })
+        .bind().await;
 
     let route = Router::new()
         .hoop(affix::inject(app_state)).hoop(cors_middleware).hoop(cors)
@@ -83,4 +90,10 @@ async fn cors_middleware(&self, req: &mut Request, depot: &mut Depot, res: &mut 
         ctrl.skip_rest();
     }
     ctrl.call_next(req, depot, res).await;
+}
+
+fn load_config(pkcs12_passwd:&str) -> NativeTlsConfig {
+    NativeTlsConfig::new()
+        .pkcs12(include_bytes!("../certs/identity.p12").to_vec())
+        .password(pkcs12_passwd)
 }

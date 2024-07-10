@@ -41,6 +41,6 @@ impl PartialOrd for Issue {
 impl Eq for Issue {}
 impl Ord for Issue {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.partial_cmp(other).unwrap()
+        self.partial_cmp(other).unwrap() 
     }
 }

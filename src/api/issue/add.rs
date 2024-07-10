@@ -28,7 +28,7 @@ pub async fn add_issue(req:&mut Request, depot: &mut Depot, res: &mut Response) 
             res.render(Text::Plain("预约成功"));
         } else {
             res.status_code(StatusCode::BAD_REQUEST);
-            res.render(Text::Plain("验证码错误"));  
+            res.render(Text::Plain("验证码错误"));
         }
         appstate.verifycode.remove(&verifycode_url);
     } else {

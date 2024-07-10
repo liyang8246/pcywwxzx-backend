@@ -2,3 +2,4 @@
 .env
 data.sqlite
 reserve.sql
+certs/identity.p12

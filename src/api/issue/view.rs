@@ -15,7 +15,7 @@ pub async fn view_issue(req:&mut Request, depot: &mut Depot, res: &mut Response)
             .unwrap().into_iter()
             .map(|issue| Issue {
                 id: Some(issue.id as usize),
-                uid: Some(issue.uid),
+                uid: Some(issue.uid.to_string()),
                 name: Some(issue.name),
                 class: Some(issue.class),
                 problem: Some(issue.problem),
