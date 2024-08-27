@@ -106,6 +106,6 @@ async fn cors_middleware(&self,req: &mut Request,depot: &mut Depot,res: &mut Res
 
 fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
     NativeTlsConfig::new()
-        .pkcs12(include_bytes!("../certs/identity.p12").to_vec())
+        .pkcs12(include_bytes!("../data/certs/identity.p12").to_vec())
         .password(pkcs12_passwd)
 }
