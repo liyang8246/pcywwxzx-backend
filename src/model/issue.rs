@@ -26,12 +26,12 @@ impl PartialOrd for Issue {
     fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
         match self.closed.cmp(&other.closed) {
             Ordering::Less => return Some(Ordering::Less),
-            Ordering::Equal => {},
+            Ordering::Equal => {}
             Ordering::Greater => return Some(Ordering::Greater),
         }
         match self.app_time.cmp(&other.app_time) {
             Ordering::Less => return Some(Ordering::Greater),
-            Ordering::Equal => {},
+            Ordering::Equal => {}
             Ordering::Greater => return Some(Ordering::Less),
         }
         Some(Ordering::Equal)
@@ -41,6 +41,6 @@ impl PartialOrd for Issue {
 impl Eq for Issue {}
 impl Ord for Issue {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.partial_cmp(other).unwrap() 
+        self.partial_cmp(other).unwrap()
     }
 }
