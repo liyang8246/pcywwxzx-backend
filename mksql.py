@@ -2,7 +2,7 @@ import os
 import sqlite3
 
 # 数据库文件名
-db_filename = 'data.sqlite'
+db_filename = 'data/db/data.sqlite'
 
 # 检查data.sqlite文件是否存在
 if not os.path.exists(db_filename):
