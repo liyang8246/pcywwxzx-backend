@@ -15,7 +15,7 @@ RUN apt-get install -y python3
 
 # 编译Rust项目
 RUN cargo build --release
-RUN cp target/debug/pcyw-salvo ./
+RUN cp target/release/pcyw-salvo ./
 RUN rm -rf target
 # 运行python脚本并启动Rust应用程序
 CMD ["sh", "-c", "python3 mksql.py && cargo run --release"]
