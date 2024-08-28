@@ -15,10 +15,6 @@ jobs:
       with:
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
-    - name: Push the Docker image to Docker Hub
-      run: |
-        docker image tag liyang8246/salvo-pcywwxzx:$(date +%s) your-dockerhub-username/repository-name:latest
-        docker push your-dockerhub-username/repository-name:latest
     - name: Build and push
       uses: docker/build-push-action@v4
       with:
