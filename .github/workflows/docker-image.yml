@@ -31,7 +31,7 @@ jobs:
         push: true
         tags: ${{ secrets.DOCKERHUB_USERNAME }}/salvo-pcywwxzx:latest
     - name: Trigger Webhook
-      uses: peter-evans/http-request-action@v1
+      uses: fjogeleit/http-request-action@v1
       with:
         url: 'http://eromanga.top:9000/api/stacks/webhooks/8d0f20cc-7549-4db2-bef0-2ce566762895'
         method: POST
