@@ -4,6 +4,7 @@ use reqwest::Method;
 use salvo::http::header::*;
 use salvo::{conn::native_tls::NativeTlsConfig, cors::Cors, prelude::*};
 use sqlx::sqlite::SqlitePoolOptions;
+use std::fs;
 use std::{
     collections::HashMap,
     env,
@@ -105,7 +106,8 @@ async fn cors_middleware(&self,req: &mut Request,depot: &mut Depot,res: &mut Res
 }
 
 fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
+    let pkcs12 = fs::read("data/certs/identity.p12").unwrap();
     NativeTlsConfig::new()
-        .pkcs12(include_bytes!("../data/certs/identity.p12").to_vec())
+        .pkcs12(pkcs12)
         .password(pkcs12_passwd)
 }
