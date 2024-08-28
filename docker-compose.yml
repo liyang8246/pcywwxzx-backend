@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  myapp:
+    image: docker.io/liyang8246/salvo-pcywwxzx:latest
+    volumes:
+      - /home/liyang/data:/usr/src/myapp/data
+    ports:
+      - "5800:5800"
+    restart: unless-stopped
