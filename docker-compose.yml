@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  myapp:
+  salvo-pcywwxzx:
     image: docker.io/liyang8246/salvo-pcywwxzx:latest
     volumes:
       - /app/pcywwxzx:/usr/src/myapp/data
