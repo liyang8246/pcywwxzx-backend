@@ -1365,6 +1365,7 @@ dependencies = [
  "chrono",
  "dotenv",
  "jsonwebtoken",
+ "log",
  "once_cell",
  "reqwest",
  "salvo",

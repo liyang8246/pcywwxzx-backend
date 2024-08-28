@@ -1,4 +1,4 @@
-use std::cmp::Ordering;
+use std::{cmp::Ordering, fmt};
 
 use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
@@ -14,6 +14,12 @@ pub struct Issue {
     pub app_time: Option<NaiveDateTime>,
     pub closed: Option<bool>,
     pub closed_time: Option<NaiveDateTime>,
+}
+
+impl fmt::Display for Issue {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "{}", serde_json::to_string(self).unwrap())
+    }
 }
 
 impl PartialEq for Issue {
