@@ -74,6 +74,7 @@ async fn main() -> anyhow::Result<()> {
         .await;
 
     let route = Router::new()
+        .get(hello)
         .hoop(affix_state::inject(app_state))
         .hoop(cors_middleware)
         .hoop(cors)
@@ -105,8 +106,13 @@ async fn cors_middleware(&self,req: &mut Request,depot: &mut Depot,res: &mut Res
     ctrl.call_next(req, depot, res).await;
 }
 
+#[handler]
+async fn hello(res: &mut Response) {
+    res.render("welcome to pcywwxzx backend");
+}
+
 fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
-    let pkcs12 = fs::read("data/certs/identity.p12").unwrap();
+    let pkcs12 = fs::read("data/certs/identity.p12").expect("unable to read pkcs12");
     NativeTlsConfig::new()
         .pkcs12(pkcs12)
         .password(pkcs12_passwd)
