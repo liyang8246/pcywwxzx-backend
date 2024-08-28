@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   salvo-pcywwxzx:
-    image: docker.io/liyang8246/salvo-pcywwxzx:latest
+    image: liyang8246/salvo-pcywwxzx:latest
     volumes:
       - /app/pcywwxzx:/usr/src/myapp/data
     ports:
