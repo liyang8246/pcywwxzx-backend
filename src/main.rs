@@ -76,7 +76,7 @@ async fn main() -> anyhow::Result<()> {
     let route = Router::new()
         .get(hello)
         .hoop(affix_state::inject(app_state))
-        .hoop(cors_middleware)
+        // .hoop(cors_middleware)
         .hoop(cors)
         .push(Router::with_path("api")
                 .push(Router::with_path("verifycode")
