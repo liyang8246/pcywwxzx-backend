@@ -14,7 +14,7 @@ def get_last_commit_date():
     return datetime.strptime(latest_commit, "%Y-%m-%dT%H:%M:%SZ")
 
 last_commit_date = datetime.fromtimestamp(0)
-process = subprocess.Popen(["cargo", "run"])
+process = subprocess.Popen(["cargo", "run", "--release"])
 
 while True:
     commit_date = get_last_commit_date()
@@ -25,4 +25,4 @@ while True:
         time.sleep(60)
     process.terminate()
     process.wait()
-    process = subprocess.Popen(["cargo", "run"])
+    process = subprocess.Popen(["cargo", "run", "--release"])
