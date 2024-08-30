@@ -94,7 +94,7 @@ async fn main() -> anyhow::Result<()> {
 
 #[handler]
 async fn hello(res: &mut Response) {
-    res.render("welcome to pcywwxzx backend :)");
+    res.render("welcome to pcywwxzx backend");
 }
 
 fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
