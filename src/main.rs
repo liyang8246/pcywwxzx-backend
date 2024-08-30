@@ -76,7 +76,6 @@ async fn main() -> anyhow::Result<()> {
     let route = Router::new()
         .get(hello)
         .hoop(affix_state::inject(app_state))
-        // .hoop(cors_middleware)
         .hoop(cors)
         .push(Router::with_path("api")
                 .push(Router::with_path("verifycode")
@@ -95,20 +94,8 @@ async fn main() -> anyhow::Result<()> {
 }
 
 #[handler]
-async fn cors_middleware(&self,req: &mut Request,depot: &mut Depot,res: &mut Response,ctrl: &mut FlowCtrl) {
-    res.headers_mut().insert(ACCESS_CONTROL_ALLOW_ORIGIN, "*".parse().unwrap());
-    res.headers_mut().insert(ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS".parse().unwrap());
-    res.headers_mut().insert(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization".parse().unwrap());
-    if req.method() == Method::OPTIONS {
-        res.status_code = Some(StatusCode::NO_CONTENT);
-        ctrl.skip_rest();
-    }
-    ctrl.call_next(req, depot, res).await;
-}
-
-#[handler]
 async fn hello(res: &mut Response) {
-    res.render("welcome to pcywwxzx backend");
+    res.render("welcome to pcywwxzx backend :)");
 }
 
 fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
