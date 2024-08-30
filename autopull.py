@@ -29,6 +29,9 @@ while True:
         print(e)
         time.sleep(60)
         continue
-    process.terminate()
-    process.wait()
-    process = subprocess.Popen(["cargo", "run", "--release"])
+    try:
+        process.terminate()
+        process.wait()
+        process = subprocess.Popen(["cargo", "run", "--release"])
+    except Exception as e:
+        print(e)

@@ -1,7 +1,6 @@
 use api::{get_verifycode, issue::*};
 use model::{AppState, State};
 use reqwest::Method;
-use salvo::http::header::*;
 use salvo::{conn::native_tls::NativeTlsConfig, cors::Cors, prelude::*};
 use sqlx::sqlite::SqlitePoolOptions;
 use std::fs;
