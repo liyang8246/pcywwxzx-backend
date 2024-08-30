@@ -23,7 +23,7 @@ while True:
             subprocess.run(["git", "pull"])
             last_commit_date = commit_date
         else:
-            time.sleep(60)
+            time.sleep(600)
             continue
     except Exception as e:
         print(e)
