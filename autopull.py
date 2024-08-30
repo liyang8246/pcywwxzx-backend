@@ -1,14 +1,17 @@
+import os
 import subprocess
 import requests
 import time
 from datetime import datetime
+from dotenv import load_dotenv
 
-# GitHub API URL
+load_dotenv()
+github_user = os.getenv("GITHUB_USER")
+github_secret = os.getenv("GITHUB_SECRET")
 repo_url = "https://api.github.com/repos/liyang8246/pcywwxzx-backend"
-
 def get_last_commit_date():
     global last_commit_date
-    response = requests.get(repo_url)
+    response = requests.get(repo_url,auth=(github_user, github_secret))
     response.raise_for_status()
     latest_commit = response.json()["pushed_at"]
     return datetime.strptime(latest_commit, "%Y-%m-%dT%H:%M:%SZ")
