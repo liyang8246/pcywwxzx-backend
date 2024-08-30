@@ -23,6 +23,7 @@ while True:
         last_commit_date = commit_date
     else:
         time.sleep(60)
+        continue
     process.terminate()
     process.wait()
     process = subprocess.Popen(["cargo", "run", "--release"])
