@@ -14,14 +14,19 @@ def get_last_commit_date():
     return datetime.strptime(latest_commit, "%Y-%m-%dT%H:%M:%SZ")
 
 last_commit_date = datetime.fromtimestamp(0)
-process = subprocess.Popen(["cargo", "run", "--release"])
+process = subprocess.Popen(["echo", "autopull running"])
 
 while True:
-    commit_date = get_last_commit_date()
-    if last_commit_date < commit_date:
-        subprocess.run(["git", "pull"])
-        last_commit_date = commit_date
-    else:
+    try:
+        commit_date = get_last_commit_date()
+        if last_commit_date < commit_date:
+            subprocess.run(["git", "pull"])
+            last_commit_date = commit_date
+        else:
+            time.sleep(60)
+            continue
+    except Exception as e:
+        print(e)
         time.sleep(60)
         continue
     process.terminate()
