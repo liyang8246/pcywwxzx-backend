@@ -49,10 +49,7 @@ async fn main() -> anyhow::Result<()> {
     });
 
     let cors = Cors::new()
-        .allow_origin([
-            "https://www.pcywwxzx.top",
-            "http://127.0.0.1:5500",
-        ])
+        .allow_origin("https://www.pcywwxzx.top")
         .allow_methods(vec![
             Method::GET,
             Method::PUT,
