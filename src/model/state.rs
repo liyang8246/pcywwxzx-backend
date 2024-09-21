@@ -2,7 +2,6 @@ use sqlx::SqlitePool;
 use std::{collections::HashMap, sync::Arc, time::Instant};
 use tokio::sync::Mutex;
 
-
 pub type State = Arc<Mutex<AppState>>;
 #[allow(dead_code)]
 pub struct AppState {

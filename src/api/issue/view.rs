@@ -1,8 +1,8 @@
-use salvo::prelude::*;
 use crate::model::*;
+use salvo::prelude::*;
 
 #[handler]
-pub async fn view_issue(req:&mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
+pub async fn view_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
     let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
     let passwd = req.query::<String>("passwd").ok_or(AppError::Parameter("passwd"))?;
     if passwd != appstate.manager_passwd {
@@ -24,7 +24,8 @@ pub async fn view_issue(req:&mut Request, depot: &mut Depot, res: &mut Response)
             app_time: Some(issue.app_time),
             closed: Some(issue.closed),
             closed_time: issue.closed_time,
-        }).collect::<Vec<Issue>>();
+        })
+        .collect::<Vec<Issue>>();
     drop(appstate);
     issues.sort();
     let json = serde_json::to_string(&issues)?;

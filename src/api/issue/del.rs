@@ -1,8 +1,8 @@
-use salvo::prelude::*;
 use crate::model::*;
+use salvo::prelude::*;
 
 #[handler]
-pub async fn del_issue(req:&mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
+pub async fn del_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
     let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
     let passwd = req.query::<String>("passwd").ok_or(AppError::Parameter("passwd"))?;
     let id = req.query::<i64>("id").ok_or(AppError::Parameter("id"))?;

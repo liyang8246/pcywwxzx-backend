@@ -51,13 +51,7 @@ async fn main() -> anyhow::Result<()> {
 
     let cors = Cors::new()
         .allow_origin("https://www.pcywwxzx.top")
-        .allow_methods(vec![
-            Method::GET,
-            Method::PUT,
-            Method::POST,
-            Method::DELETE,
-            Method::OPTIONS,
-        ])
+        .allow_methods(vec![Method::GET, Method::PUT, Method::POST, Method::DELETE, Method::OPTIONS])
         .into_handler();
 
     let acceptor = TcpListener::new("0.0.0.0:5800")
@@ -75,10 +69,11 @@ async fn main() -> anyhow::Result<()> {
         .hoop(cors_middleware)
         .hoop(affix_state::inject(app_state))
         .hoop(cors)
-        .push(Router::with_path("api")
-                .push(Router::with_path("verifycode")
-                    .get(get_verifycode))
-                .push(Router::with_path("issue")
+        .push(
+            Router::with_path("api")
+                .push(Router::with_path("verifycode").get(get_verifycode))
+                .push(
+                    Router::with_path("issue")
                         .put(add_issue)
                         .options(add_issue)
                         .get(view_issue)
@@ -98,16 +93,18 @@ async fn hello(res: &mut Response) {
 
 fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
     let pkcs12 = fs::read("data/certs/identity.p12").expect("unable to read pkcs12");
-    NativeTlsConfig::new()
-        .pkcs12(pkcs12)
-        .password(pkcs12_passwd)
+    NativeTlsConfig::new().pkcs12(pkcs12).password(pkcs12_passwd)
 }
 
 #[handler]
-async fn cors_middleware(&self,req: &mut Request,depot: &mut Depot,res: &mut Response,ctrl: &mut FlowCtrl) {
+async fn cors_middleware(&self, req: &mut Request, depot: &mut Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
     res.headers_mut().insert(ACCESS_CONTROL_ALLOW_ORIGIN, "*".parse().unwrap());
-    res.headers_mut().insert(ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS".parse().unwrap());
-    res.headers_mut().insert(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization".parse().unwrap());
+    res.headers_mut().insert(
+        ACCESS_CONTROL_ALLOW_METHODS,
+        "GET, POST, PUT, DELETE, OPTIONS".parse().unwrap(),
+    );
+    res.headers_mut()
+        .insert(ACCESS_CONTROL_ALLOW_HEADERS, "Content-Type, Authorization".parse().unwrap());
     if req.method() == Method::OPTIONS {
         res.status_code = Some(StatusCode::NO_CONTENT);
         ctrl.skip_rest();

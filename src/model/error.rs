@@ -1,3 +1,4 @@
+use log::*;
 use salvo::prelude::*;
 use thiserror::Error;
 
@@ -12,7 +13,7 @@ pub enum AppError {
     #[error("parameter: `{0}`")]
     Parameter(&'static str),
     #[error("parse_json: `{0}`")]
-    ParseJson(#[from] salvo::http::errors::ParseError)
+    ParseJson(#[from] salvo::http::errors::ParseError),
 }
 
 pub type AppResult<T> = Result<T, AppError>;
@@ -20,7 +21,7 @@ pub type AppResult<T> = Result<T, AppError>;
 #[async_trait]
 impl Writer for AppError {
     async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
-        println!("AppError: {:?}", self);
+        error!("AppError: {:?}", self);
         res.render(Text::Plain("服务器内部错误"));
     }
 }

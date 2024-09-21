@@ -1,9 +1,9 @@
+use crate::model::*;
 use chrono::Local;
 use salvo::prelude::*;
-use crate::model::*;
 
 #[handler]
-pub async fn add_issue(req:&mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
+pub async fn add_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
     let mut appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
     let verify_issue: ResWithVerifyCode<Issue> = req.parse_json().await?;
     let verifycode_url = verify_issue.verifycode_url;
@@ -11,18 +11,18 @@ pub async fn add_issue(req:&mut Request, depot: &mut Depot, res: &mut Response) 
     if verifycode.is_none() {
         res.status_code(StatusCode::BAD_REQUEST);
         res.render(Text::Plain("验证码过期"));
-        return Ok(())
+        return Ok(());
     }
     if verifycode.unwrap().0 != verify_issue.verifycode {
         res.status_code(StatusCode::BAD_REQUEST);
         res.render(Text::Plain("验证码错误"));
-        return Ok(())
+        return Ok(());
     }
     let mut issue = verify_issue.response;
-        issue.reg_time = Some(Local::now().naive_local());
-        issue.closed = Some(false);
-        issue.closed_time = None;
-        sqlx::query!(
+    issue.reg_time = Some(Local::now().naive_local());
+    issue.closed = Some(false);
+    issue.closed_time = None;
+    sqlx::query!(
             r#"INSERT INTO issue (uid, name, class, problem, reg_time, app_time, closed, closed_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"#,
             issue.uid,
             issue.name,
@@ -33,9 +33,9 @@ pub async fn add_issue(req:&mut Request, depot: &mut Depot, res: &mut Response) 
             issue.closed,
             issue.closed_time,
         ).execute(&appstate.db_pool).await?;
-        res.status_code(StatusCode::OK);
-        res.render(Text::Plain("预约成功"));
-        log::info!("add issue {}",issue);
-        appstate.verifycode.remove(&verifycode_url);
-        return Ok(())
+    res.status_code(StatusCode::OK);
+    res.render(Text::Plain("预约成功"));
+    log::info!("add issue {}", issue);
+    appstate.verifycode.remove(&verifycode_url);
+    return Ok(());
 }

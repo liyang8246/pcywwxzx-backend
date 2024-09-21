@@ -1,0 +1,6 @@
+max_width = 128
+# use_small_heuristics = "Max"
+newline_style = "Unix"
+remove_nested_parens = true
+reorder_modules = true
+reorder_imports = true
