@@ -23,16 +23,22 @@ pub async fn add_issue(req: &mut Request, depot: &mut Depot, res: &mut Response)
     issue.closed = Some(false);
     issue.closed_time = None;
     sqlx::query!(
-            r#"INSERT INTO issue (uid, name, class, problem, reg_time, app_time, closed, closed_time) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"#,
-            issue.uid,
-            issue.name,
-            issue.class,
-            issue.problem,
-            issue.reg_time,
-            issue.app_time,
-            issue.closed,
-            issue.closed_time,
-        ).execute(&appstate.db_pool).await?;
+        r#"INSERT INTO issue 
+                (uid, name, class, problem, phone, reg_time, app_time, closed, closed_time)
+            VALUES
+                ($1,$2,$3,$4,$5,$6,$7,$8,$9)"#,
+        issue.uid,
+        issue.name,
+        issue.class,
+        issue.problem,
+        issue.phone,
+        issue.reg_time,
+        issue.app_time,
+        issue.closed,
+        issue.closed_time,
+    )
+    .execute(&appstate.db_pool)
+    .await?;
     res.status_code(StatusCode::OK);
     res.render(Text::Plain("预约成功"));
     log::info!("add issue {}", issue);

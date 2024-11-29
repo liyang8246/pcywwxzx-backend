@@ -19,7 +19,7 @@ pub async fn get_verifycode(depot: &mut Depot, res: &mut Response) -> AppResult<
         match json["data"]["verifyCode"].as_str() {
             Some(x) => {
                 verifycode = x.to_string().to_lowercase();
-                verifycode_url = json["data"]["verifyCodeImgUrl"].to_string();
+                verifycode_url = json["data"]["verifyCodeImgUrl"].to_string().trim_matches('"').to_string();
                 break;
             }
             None => time::sleep(Duration::from_secs(1)).await,

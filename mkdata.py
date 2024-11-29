@@ -15,17 +15,17 @@ if not os.path.exists(db_filename):
     cursor = conn.cursor()
 
     create_table_sql = """
-    CREATE TABLE IF NOT EXISTS issue (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        uid INTEGER NOT NULL,
-        name TEXT NOT NULL,
-        class TEXT NOT NULL,
-        problem TEXT NOT NULL,
-        reg_time TIMESTAMP NOT NULL,
-        app_time TIMESTAMP NOT NULL,
-        closed BOOLEAN NOT NULL,
-        closed_time TIMESTAMP
-    );
+CREATE TABLE IF NOT EXISTS issue (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    uid INTEGER NOT NULL,
+    name TEXT NOT NULL,
+    class TEXT NOT NULL,
+    problem TEXT NOT NULL,
+    reg_time TIMESTAMP NOT NULL,
+    app_time TIMESTAMP NOT NULL,
+    closed BOOLEAN NOT NULL,
+    closed_time TIMESTAMP
+);
     """
 
     cursor.execute(create_table_sql)

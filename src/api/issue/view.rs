@@ -16,9 +16,10 @@ pub async fn view_issue(req: &mut Request, depot: &mut Depot, res: &mut Response
         .into_iter()
         .map(|issue| Issue {
             id: Some(issue.id as usize),
-            uid: Some(issue.uid.to_string()),
+            uid: Some(issue.uid),
             name: Some(issue.name),
             class: Some(issue.class),
+            phone: Some(issue.phone),
             problem: Some(issue.problem),
             reg_time: Some(issue.reg_time),
             app_time: Some(issue.app_time),

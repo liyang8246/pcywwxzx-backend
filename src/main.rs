@@ -1,10 +1,10 @@
 use api::{get_verifycode, issue::*};
+use log::*;
 use model::{AppState, State};
 use reqwest::header::*;
 use reqwest::Method;
-use salvo::{conn::native_tls::NativeTlsConfig, cors::Cors, prelude::*};
-use sqlx::sqlite::SqlitePoolOptions;
-use std::fs;
+use salvo::{cors::Cors, prelude::*};
+use sqlx::pool::PoolOptions;
 use std::{
     collections::HashMap,
     env,
@@ -25,9 +25,8 @@ async fn main() -> anyhow::Result<()> {
     let mxnzp_appid = env::var("MXNZP_APPID")?;
     let mxnzp_secret = env::var("MXNZP_SECRET")?;
     let manager_passwd = env::var("MANAGER_PASSWD")?;
-    let pkcs12_passwd = env::var("PKCS12_PASSWD")?;
     let app_state: State = Arc::new(Mutex::new(AppState {
-        db_pool: SqlitePoolOptions::new()
+        db_pool: PoolOptions::new()
             .max_connections(4)
             .connect(&db_url)
             .await
@@ -41,7 +40,7 @@ async fn main() -> anyhow::Result<()> {
     let state_clone = Arc::clone(&app_state);
     tokio::spawn(async move {
         loop {
-            sleep(Duration::from_secs(10)).await;
+            sleep(Duration::from_secs(1)).await;
             let mut state = state_clone.lock().await;
             state
                 .verifycode
@@ -50,19 +49,15 @@ async fn main() -> anyhow::Result<()> {
     });
 
     let cors = Cors::new()
-        .allow_origin("https://www.pcywwxzx.top")
+        .allow_origin([
+            "https://www.pcywwxzx.top",
+            "http://localhost:5173",
+            "http://192.168.1.15:5173",
+        ])
         .allow_methods(vec![Method::GET, Method::PUT, Method::POST, Method::DELETE, Method::OPTIONS])
         .into_handler();
 
-    let acceptor = TcpListener::new("0.0.0.0:5800")
-        .native_tls(async_stream::stream! {
-                loop {
-                    yield load_config(&pkcs12_passwd);
-                    tokio::time::sleep(Duration::from_secs(60)).await;
-                }
-        })
-        .bind()
-        .await;
+    let acceptor = TcpListener::new("0.0.0.0:5800").bind().await;
 
     let route = Router::new()
         .get(hello)
@@ -89,11 +84,6 @@ async fn main() -> anyhow::Result<()> {
 #[handler]
 async fn hello(res: &mut Response) {
     res.render("welcome to pcywwxzx backend :)");
-}
-
-fn load_config(pkcs12_passwd: &str) -> NativeTlsConfig {
-    let pkcs12 = fs::read("data/certs/identity.p12").expect("unable to read pkcs12");
-    NativeTlsConfig::new().pkcs12(pkcs12).password(pkcs12_passwd)
 }
 
 #[handler]

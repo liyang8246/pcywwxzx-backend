@@ -9,6 +9,7 @@ pub struct Issue {
     pub uid: Option<String>,
     pub name: Option<String>,
     pub class: Option<String>,
+    pub phone: Option<String>,
     pub problem: Option<String>,
     pub reg_time: Option<NaiveDateTime>,
     pub app_time: Option<NaiveDateTime>,
@@ -37,10 +38,9 @@ impl PartialOrd for Issue {
         }
         match self.app_time.cmp(&other.app_time) {
             Ordering::Less => return Some(Ordering::Greater),
-            Ordering::Equal => {}
+            Ordering::Equal => return Some(Ordering::Equal),
             Ordering::Greater => return Some(Ordering::Less),
         }
-        Some(Ordering::Equal)
     }
 }
 
