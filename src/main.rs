@@ -1,5 +1,4 @@
 use api::{get_verifycode, issue::*};
-use log::*;
 use model::{AppState, State};
 use reqwest::header::*;
 use reqwest::Method;

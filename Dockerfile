@@ -18,4 +18,4 @@ RUN SQLX_OFFLINE=true cargo build --release
 RUN cp target/release/pcyw-salvo ./
 RUN rm -rf target
 # 运行python脚本并启动Rust应用程序
-CMD ["sh", "-c", "python3 mkdata.py && ./pcyw-salvo"]
+CMD ["sh", "-c", "./pcyw-salvo"]
