@@ -1,4 +1,4 @@
-use api::{get_verifycode, issue::*};
+use api::{*, issue::*};
 use model::{AppState, State};
 use reqwest::header::*;
 use reqwest::Method;
@@ -66,6 +66,8 @@ async fn main() -> anyhow::Result<()> {
         .push(
             Router::with_path("api")
                 .push(Router::with_path("verifycode").get(get_verifycode))
+                .push(Router::with_path("issue_num").get(get_issue_num))
+                .push(Router::with_path("date_num").get(get_date_num))
                 .push(
                     Router::with_path("issue")
                         .put(add_issue)
