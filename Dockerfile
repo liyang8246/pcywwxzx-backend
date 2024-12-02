@@ -1,21 +1,26 @@
-# 使用rust:1-bullseye基础镜像
-FROM rust:1-bullseye
+# 第一阶段：使用 rust:1-bullseye 作为编译环境
+FROM rust:1-bullseye as builder
 
 # 设置工作目录
-WORKDIR /usr/src/myapp
-
-# 安装sqlite3和openssl
-RUN apt-get update && apt-get install -y sqlite3 libsqlite3-dev openssl
+WORKDIR /app
 
 # 复制项目源代码到工作目录
 COPY . .
 
-# 安装Python3（rust镜像可能不包含Python3）
-RUN apt-get install -y python3
+# 安装交叉编译工具链
+RUN rustup target add x86_64-unknown-linux-musl
 
-# 编译Rust项目
-RUN SQLX_OFFLINE=true cargo build --release
-RUN cp target/release/pcyw-salvo ./
-RUN rm -rf target
-# 运行python脚本并启动Rust应用程序
-CMD ["sh", "-c", "./pcyw-salvo"]
+# 编译Rust项目为静态链接的可执行文件
+RUN SQLX_OFFLINE=true cargo build --release --target x86_64-unknown-linux-musl
+
+# 第二阶段：使用 Alpine Linux 作为运行环境
+FROM alpine:latest
+
+# 设置工作目录
+WORKDIR /app
+
+# 从构建器阶段复制编译好的可执行文件
+COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/pcyw-salvo ./
+
+# 运行应用程序
+CMD ["./pcyw-salvo"]
