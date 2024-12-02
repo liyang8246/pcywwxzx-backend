@@ -7,7 +7,10 @@ use salvo::prelude::*;
 #[handler]
 pub async fn get_issue_num(depot: &mut Depot, res: &mut Response) -> AppResult<()> {
     let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
-    let num = sqlx::query!("SELECT COUNT(*) FROM issue").fetch_one(&appstate.db_pool).await?.count;
+    let num = sqlx::query!("SELECT COUNT(*) FROM issue")
+        .fetch_one(&appstate.db_pool)
+        .await?
+        .count;
     match num {
         Some(x) => res.render(Text::Plain(x.to_string())),
         None => res.render(Text::Plain("0".to_string())),
@@ -18,7 +21,12 @@ pub async fn get_issue_num(depot: &mut Depot, res: &mut Response) -> AppResult<(
 #[handler]
 pub async fn get_date_num(depot: &mut Depot, res: &mut Response) -> AppResult<()> {
     let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
-    let datetimes:Vec<NaiveDateTime> = sqlx::query!("SELECT app_time FROM issue").fetch_all(&appstate.db_pool).await?.iter().map(|x|x.app_time).collect();
+    let datetimes: Vec<NaiveDateTime> = sqlx::query!("SELECT app_time FROM issue")
+        .fetch_all(&appstate.db_pool)
+        .await?
+        .iter()
+        .map(|x| x.app_time)
+        .collect();
     let mut weeks = HashSet::new();
     for datetime in datetimes {
         let weekday = datetime.weekday();

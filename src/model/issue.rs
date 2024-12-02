@@ -5,15 +5,15 @@ use serde::{Deserialize, Serialize};
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Issue {
-    pub id: Option<usize>,
-    pub uid: Option<String>,
-    pub name: Option<String>,
-    pub class: Option<String>,
-    pub phone: Option<String>,
-    pub problem: Option<String>,
-    pub reg_time: Option<NaiveDateTime>,
-    pub app_time: Option<NaiveDateTime>,
-    pub closed: Option<bool>,
+    pub id:          Option<usize>,
+    pub uid:         Option<String>,
+    pub name:        Option<String>,
+    pub class:       Option<String>,
+    pub phone:       Option<String>,
+    pub problem:     Option<String>,
+    pub reg_time:    Option<NaiveDateTime>,
+    pub app_time:    Option<NaiveDateTime>,
+    pub closed:      Option<bool>,
     pub closed_time: Option<NaiveDateTime>,
 }
 

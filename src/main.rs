@@ -1,4 +1,4 @@
-use api::{*, issue::*};
+use api::{issue::*, *};
 use model::{AppState, State};
 use reqwest::header::*;
 use reqwest::Method;

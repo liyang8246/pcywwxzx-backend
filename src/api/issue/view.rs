@@ -15,15 +15,15 @@ pub async fn view_issue(req: &mut Request, depot: &mut Depot, res: &mut Response
         .await?
         .into_iter()
         .map(|issue| Issue {
-            id: Some(issue.id as usize),
-            uid: Some(issue.uid),
-            name: Some(issue.name),
-            class: Some(issue.class),
-            phone: Some(issue.phone),
-            problem: Some(issue.problem),
-            reg_time: Some(issue.reg_time),
-            app_time: Some(issue.app_time),
-            closed: Some(issue.closed),
+            id:          Some(issue.id as usize),
+            uid:         Some(issue.uid),
+            name:        Some(issue.name),
+            class:       Some(issue.class),
+            phone:       Some(issue.phone),
+            problem:     Some(issue.problem),
+            reg_time:    Some(issue.reg_time),
+            app_time:    Some(issue.app_time),
+            closed:      Some(issue.closed),
             closed_time: issue.closed_time,
         })
         .collect::<Vec<Issue>>();
