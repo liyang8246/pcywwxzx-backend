@@ -19,9 +19,7 @@ FROM debian:bookworm-slim
 # 设置工作目录
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    libssl1.1 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y libssl-dev
 
 # 从构建器阶段复制编译好的可执行文件
 COPY --from=builder /app/target/release/pcyw-salvo ./
