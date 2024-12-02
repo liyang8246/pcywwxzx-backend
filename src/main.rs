@@ -25,6 +25,7 @@ async fn main() -> anyhow::Result<()> {
     let mxnzp_secret = env::var("MXNZP_SECRET")?;
     let manager_passwd = env::var("MANAGER_PASSWD")?;
     let app_state: State = Arc::new(Mutex::new(AppState {
+        version: env!("CARGO_PKG_VERSION").to_string(),
         db_pool: PoolOptions::new()
             .max_connections(4)
             .connect(&db_url)
@@ -68,6 +69,7 @@ async fn main() -> anyhow::Result<()> {
                 .push(Router::with_path("verifycode").get(get_verifycode))
                 .push(Router::with_path("issue_num").get(get_issue_num))
                 .push(Router::with_path("date_num").get(get_date_num))
+                .push(Router::with_path("version").get(get_version))
                 .push(
                     Router::with_path("issue")
                         .put(add_issue)

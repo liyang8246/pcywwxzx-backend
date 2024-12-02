@@ -2,6 +2,8 @@
 pub mod issue;
 pub mod homedata;
 pub mod verifycode;
+pub mod version;
 
-pub use verifycode::get_verifycode;
+pub use verifycode::*;
 pub use homedata::*;
+pub use version::*;

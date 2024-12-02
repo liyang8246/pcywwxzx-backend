@@ -5,6 +5,7 @@ use tokio::sync::Mutex;
 pub type State = Arc<Mutex<AppState>>;
 #[allow(dead_code)]
 pub struct AppState {
+    pub version: String,
     pub db_pool: PgPool,
     pub mxnzp_appid: String,
     pub mxnzp_secret: String,
