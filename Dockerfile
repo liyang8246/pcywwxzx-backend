@@ -20,7 +20,7 @@ FROM debian:bookworm-slim
 WORKDIR /app
 
 # 从构建器阶段复制编译好的可执行文件
-COPY --from=builder /app/target/x86_64-unknown-linux-musl/release/pcyw-salvo ./
+COPY --from=builder /app/target/release/pcyw-salvo ./
 
 # 运行应用程序
 CMD ["./pcyw-salvo"]
