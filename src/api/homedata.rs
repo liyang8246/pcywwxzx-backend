@@ -2,7 +2,6 @@ use std::collections::HashSet;
 
 use crate::model::{AppResult, State};
 use chrono::{Datelike, NaiveDateTime};
-use log::info;
 use salvo::prelude::*;
 
 #[handler]
