@@ -7,7 +7,7 @@ use salvo::prelude::*;
 #[handler]
 pub async fn get_issue_num(depot: &mut Depot, res: &mut Response) -> AppResult<()> {
     let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
-    let num = sqlx::query!("SELECT COUNT(*) FROM issue")
+    let num = sqlx::query!("SELECT COUNT(*) FROM issue WHERE closed = true")
         .fetch_one(&appstate.db_pool)
         .await?
         .count;

@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT COUNT(*) FROM issue",
+  "query": "SELECT COUNT(*) FROM issue WHERE closed = true",
   "describe": {
     "columns": [
       {
@@ -16,5 +16,5 @@
       null
     ]
   },
-  "hash": "d6d32d56c0bdbb3887770517d9ec30aac4067f3e669be41642fc572a651d7eae"
+  "hash": "26d40d73473362ed1cd2520ab068fa4f04cf884539b3bec4c09c3941436600a0"
 }
