@@ -19,7 +19,9 @@ FROM debian:bookworm-slim
 # 设置工作目录
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y libssl-dev
+RUN apt-get update && apt-get install -y libssl-dev ca-certificates
+RUN update-ca-certificates
+RUN rm -rf /var/lib/apt/lists/*
 
 # 从构建器阶段复制编译好的可执行文件
 COPY --from=builder /app/target/release/pcyw-salvo ./
