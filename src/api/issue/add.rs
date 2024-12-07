@@ -5,7 +5,7 @@ use tracing::info;
 
 #[handler]
 pub async fn add_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
-    let mut appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
+    let mut appstate = depot.obtain::<State>().expect("get db_pool fail").write().await;
     let verify_issue: ResWithVerifyCode<Issue> = req.parse_json().await?;
     let verifycode_url = verify_issue.verifycode_url;
     let verifycode = appstate.verifycode.get(&verifycode_url);

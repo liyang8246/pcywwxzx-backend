@@ -8,7 +8,7 @@ use std::{
     sync::Arc,
     time::{Duration, Instant},
 };
-use tokio::{sync::Mutex, time::sleep};
+use tokio::{sync::RwLock, time::sleep};
 use utils::*;
 
 mod api;
@@ -25,7 +25,7 @@ async fn main() -> anyhow::Result<()> {
     let mxnzp_secret = env::var("MXNZP_SECRET")?;
     let manager_passwd = env::var("MANAGER_PASSWD")?;
     // init app_state
-    let app_state: State = Arc::new(Mutex::new(AppState {
+    let app_state: State = Arc::new(RwLock::new(AppState {
         version: env!("CARGO_PKG_VERSION").to_string(),
         db_pool: connect_db(&db_url).await,
         mxnzp_appid,
@@ -38,7 +38,7 @@ async fn main() -> anyhow::Result<()> {
     tokio::spawn(async move {
         loop {
             sleep(Duration::from_secs(1)).await;
-            let mut state = state_clone.lock().await;
+            let mut state = state_clone.write().await;
             state
                 .verifycode
                 .retain(|_, (_, i)| *i + Duration::from_secs(300) > Instant::now());

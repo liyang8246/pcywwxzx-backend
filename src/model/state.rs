@@ -1,8 +1,8 @@
 use sqlx::PgPool;
 use std::{collections::HashMap, sync::Arc, time::Instant};
-use tokio::sync::Mutex;
+use tokio::sync::RwLock;
 
-pub type State = Arc<Mutex<AppState>>;
+pub type State = Arc<RwLock<AppState>>;
 #[allow(dead_code)]
 pub struct AppState {
     pub version:        String,
