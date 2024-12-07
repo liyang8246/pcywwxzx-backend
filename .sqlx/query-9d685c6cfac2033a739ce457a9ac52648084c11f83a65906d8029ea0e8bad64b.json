@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT * FROM issue LIMIT 64",
+  "query": "SELECT * FROM issue LIMIT 32",
   "describe": {
     "columns": [
       {
@@ -70,5 +70,5 @@
       true
     ]
   },
-  "hash": "98fb84aefa0bbbce1bf4b0ff9f4f973059af435c7660fb98e72f5d9cae45e1b4"
+  "hash": "9d685c6cfac2033a739ce457a9ac52648084c11f83a65906d8029ea0e8bad64b"
 }
