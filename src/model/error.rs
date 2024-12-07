@@ -22,6 +22,7 @@ pub type AppResult<T> = Result<T, AppError>;
 impl Writer for AppError {
     async fn write(mut self, _req: &mut Request, _depot: &mut Depot, res: &mut Response) {
         error!("AppError: {:?}", self);
+        res.status_code(StatusCode::INTERNAL_SERVER_ERROR);
         res.render(Text::Plain("服务器内部错误"));
     }
 }
