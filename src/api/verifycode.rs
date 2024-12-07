@@ -5,7 +5,7 @@ use tokio::time;
 
 #[handler]
 pub async fn get_verifycode(depot: &mut Depot, res: &mut Response) -> AppResult<()> {
-    let mut appstate = depot.obtain::<State>().expect("get db_pool fail").write().await;
+    let mut appstate = depot.obtain::<State>().expect("get appstate fail").write().await;
     let app_id = appstate.mxnzp_appid.clone();
     let app_secret = appstate.mxnzp_secret.clone();
     let url = format!(

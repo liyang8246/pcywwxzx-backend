@@ -4,7 +4,7 @@ use salvo::prelude::*;
 
 #[handler]
 pub async fn toggle_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
-    let appstate = depot.obtain::<State>().expect("get db_pool fail").read().await;
+    let appstate = depot.obtain::<State>().expect("get appstate fail").read().await;
     let passwd = req.query::<String>("passwd").ok_or(AppError::Parameter("passwd"))?;
     let id = req.query::<i32>("id").ok_or(AppError::Parameter("id"))?;
     if passwd != appstate.manager_passwd {
