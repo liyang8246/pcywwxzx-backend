@@ -1,6 +1,7 @@
 use crate::model::*;
 use chrono::Local;
 use salvo::prelude::*;
+use tracing::info;
 
 #[handler]
 pub async fn add_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
@@ -41,7 +42,7 @@ pub async fn add_issue(req: &mut Request, depot: &mut Depot, res: &mut Response)
     .await?;
     res.status_code(StatusCode::OK);
     res.render(Text::Plain("预约成功"));
-    log::info!("add issue {}", issue);
+    info!("add issue {}", issue);
     appstate.verifycode.remove(&verifycode_url);
     return Ok(());
 }

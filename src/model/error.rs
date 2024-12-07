@@ -1,6 +1,6 @@
-use log::*;
 use salvo::prelude::*;
 use thiserror::Error;
+use tracing::error;
 
 #[derive(Error, Debug)]
 pub enum AppError {
