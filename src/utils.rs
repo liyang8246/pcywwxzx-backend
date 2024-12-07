@@ -2,7 +2,7 @@ use reqwest::{header::*, Method};
 use salvo::prelude::*;
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 use tokio::time;
-use tracing::error;
+use tracing::{error, info};
 
 #[handler]
 pub async fn cors_middleware(&self, req: &mut Request, depot: &mut Depot, res: &mut Response, ctrl: &mut FlowCtrl) {
@@ -23,7 +23,10 @@ pub async fn cors_middleware(&self, req: &mut Request, depot: &mut Depot, res: &
 pub async fn connect_db(db_url: &str) -> Pool<Postgres> {
     loop {
         match PgPoolOptions::new().max_connections(4).connect(db_url).await {
-            Ok(pool) => return pool,
+            Ok(pool) => {
+                info!("Connected to database with url: {}", db_url);
+                return pool;
+            }
             Err(e) => {
                 error!("Failed to connect to database: {:?}", e);
                 time::sleep(time::Duration::from_secs(5)).await;
