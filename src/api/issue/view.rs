@@ -3,8 +3,8 @@ use salvo::prelude::*;
 
 #[handler]
 pub async fn view_issue(req: &mut Request, depot: &mut Depot, res: &mut Response) -> AppResult<()> {
-    let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
     let passwd = req.query::<String>("passwd").ok_or(AppError::Parameter("passwd"))?;
+    let appstate = depot.obtain::<State>().expect("get db_pool fail").lock().await;
     if passwd != appstate.manager_passwd {
         res.status_code(StatusCode::BAD_REQUEST);
         res.render(Text::Plain("密码错误"));
