@@ -1,6 +1,6 @@
 {
   "db_name": "PostgreSQL",
-  "query": "SELECT * FROM issue LIMIT 32",
+  "query": "SELECT * FROM issue ORDER BY reg_time DESC LIMIT 32",
   "describe": {
     "columns": [
       {
@@ -70,5 +70,5 @@
       true
     ]
   },
-  "hash": "9d685c6cfac2033a739ce457a9ac52648084c11f83a65906d8029ea0e8bad64b"
+  "hash": "1eb83a6014329ee702685c89005b02755168d225490fc4b3bf395c1af1e95846"
 }

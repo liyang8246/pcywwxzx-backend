@@ -10,7 +10,7 @@ pub async fn view_issue(req: &mut Request, depot: &mut Depot, res: &mut Response
         res.render(Text::Plain("密码错误"));
         return Ok(());
     }
-    let mut issues = sqlx::query!("SELECT * FROM issue LIMIT 32")
+    let mut issues = sqlx::query!("SELECT * FROM issue ORDER BY reg_time DESC LIMIT 32")
         .fetch_all(&appstate.db_pool)
         .await?
         .into_iter()
