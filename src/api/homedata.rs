@@ -42,3 +42,16 @@ pub async fn get_date_num(depot: &mut Depot, res: &mut Response) -> AppResult<()
     res.render(Text::Plain(days.to_string()));
     Ok(())
 }
+
+#[handler]
+pub async fn health(depot: &mut Depot, res: &mut Response) -> AppResult<()> {
+    let mut health_res = String::new();
+    let appstate = depot.obtain::<State>().expect("get appstate fail").read().await;
+    health_res += "服务器连接正常\n";
+    let _ = sqlx::query("SELECT * FROM pg_tables LIMIT 1")
+        .fetch_one(&appstate.db_pool)
+        .await?;
+    health_res += "数据库连接正常\n";
+    res.render(health_res);
+    Ok(())
+}

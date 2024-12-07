@@ -66,6 +66,7 @@ async fn main() -> anyhow::Result<()> {
                 .push(Router::with_path("issue_num").get(get_issue_num))
                 .push(Router::with_path("date_num").get(get_date_num))
                 .push(Router::with_path("version").get(get_version))
+                .push(Router::with_path("health").get(health))
                 .push(
                     Router::with_path("issue")
                         .put(add_issue)
