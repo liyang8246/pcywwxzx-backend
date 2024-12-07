@@ -22,7 +22,7 @@ pub async fn cors_middleware(&self, req: &mut Request, depot: &mut Depot, res: &
 
 pub async fn connect_db(db_url: &str) -> Pool<Postgres> {
     loop {
-        match PgPoolOptions::new().max_connections(4).connect(db_url).await {
+        match PgPoolOptions::new().max_connections(8).connect(db_url).await {
             Ok(pool) => {
                 info!("Connected to database with url: {}", db_url);
                 return pool;
