@@ -14,7 +14,7 @@ pub async fn add_issue(req: &mut Request, depot: &mut Depot, res: &mut Response)
         res.render(Text::Plain("验证码过期"));
         return Ok(());
     }
-    if verifycode.unwrap().0 != verify_issue.verifycode {
+    if verifycode.unwrap().0 != verify_issue.verifycode.to_lowercase() {
         res.status_code(StatusCode::BAD_REQUEST);
         res.render(Text::Plain("验证码错误"));
         return Ok(());
